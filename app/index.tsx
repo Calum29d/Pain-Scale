@@ -27,7 +27,7 @@ export default function Index() {
     {
       id: "faces",
       title: "Wong-Baker FACES",
-      description: "Visual pain assessment"
+      description: "Visual pain assessment - For children aged 3 years and older"
 
     },
 
