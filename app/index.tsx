@@ -34,6 +34,13 @@ export default function Index() {
       route: "/faces"
     },
 
+    {
+      id: "painRuler",
+      title: "Visual Analogue Scale (VAS)",
+      description: "Pain Ruler, used in children who are able to score their own pain",
+      route: "/painRuler",
+    },
+
   ]
 
   return (
@@ -112,9 +119,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#B1B4B6",
     borderRadius: 8,
+    boxShadow: "0 4px 15px rgba(0, 94, 184, 1)",
 
     padding: 20,
-    marginBottom: 4,
+    marginBottom: 25,
     
 
     flexDirection: "row",
