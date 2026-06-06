@@ -1,6 +1,7 @@
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, Inter_800ExtraBold, useFonts } from "@expo-google-fonts/inter";
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Href, useRouter } from "expo-router";
 import {
   ScrollView,
   StyleSheet,
@@ -14,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const [fontsLoaded] = useFonts({ Inter_700Bold, Inter_400Regular, Inter_800ExtraBold, Inter_600SemiBold, Inter_500Medium});
+  const router = useRouter();
 
   if (!fontsLoaded) return null;
 
@@ -21,14 +23,15 @@ export default function Index() {
     id: string;
     title: string;
     description: string;
+    route: Href;
   };
 
   const painScales: PainScale[] = [
     {
       id: "faces",
       title: "Wong-Baker FACES",
-      description: "Visual pain assessment - For children aged 3 years and older"
-
+      description: "Visual pain assessment - For children aged 3 years and older",
+      route: "/faces"
     },
 
   ]
@@ -51,7 +54,7 @@ export default function Index() {
               key={scale.id}
               rippleColor="rgba(0, 94, 184, 0.2)"
               style={styles.card}
-              onPress={() => {}}
+              onPress = {() => router.push(scale.route)}
               >
                 <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
                   <View style={{ flex: 1 }}>
