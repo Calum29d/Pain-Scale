@@ -60,9 +60,9 @@ export default function Index() {
             <View style = {{ flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
               <Text style = {styles.loginText}>Login or create an account</Text>
               <MaterialIcons name="account-box" size={30} color="#005EB8" style={{marginRight: 5}}/>
-
             </View>
           </TouchableRipple>
+          {/*Header text*/}
           <Entypo name="squared-plus" size={70} color="#005EB8"/>
           <Text style={styles.title}>Pain Assessments</Text>
           <Text style={styles.subtitle}>Track patients pain with validated scales used to assist healthcare professionals</Text>
