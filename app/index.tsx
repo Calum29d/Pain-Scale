@@ -1,6 +1,7 @@
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, Inter_800ExtraBold, useFonts } from "@expo-google-fonts/inter";
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Href, useRouter } from "expo-router";
 import {
   ScrollView,
@@ -26,6 +27,7 @@ export default function Index() {
     route: Href;
   };
 
+
   const painScales: PainScale[] = [
     {
       id: "faces",
@@ -50,12 +52,25 @@ export default function Index() {
 
         {/* Header */}
         <View style={styles.header}>
+          {/*login button*/}
+          <TouchableRipple
+          style = {styles.loginCard}
+          onPress={() => router.push("/login")}
+          rippleColor="rgba(255, 255, 255, 0.2)">
+            <View style = {{ flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
+              <Text style = {styles.loginText}>Login or create an account</Text>
+              <MaterialIcons name="account-box" size={30} color="#005EB8" style={{marginRight: 5}}/>
+
+            </View>
+          </TouchableRipple>
           <Entypo name="squared-plus" size={70} color="#005EB8"/>
-          <Text style={styles.title}>Pain Assesments</Text>
-          <Text style={styles.subtitle}>Validated scales used to assist healthcare professionals</Text>
+          <Text style={styles.title}>Pain Assessments</Text>
+          <Text style={styles.subtitle}>Track patients pain with validated scales used to assist healthcare professionals</Text>
           
         </View>
+
         <View style = {styles.cardSection}>
+          {/*Pain scale cards*/}
           {painScales.map((scale) => (
             <TouchableRipple
               key={scale.id}
@@ -94,6 +109,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8FAFC",
     alignItems: "center",
   },
+
+  loginCard: {
+    backgroundColor: "rgba(0, 94, 184, 0.2)",
+     borderColor: "#005EB8",
+     borderWidth: 2,
+     borderRadius: 8,
+     margin: 10,
+     boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
+  },
+
+  loginText: {
+    fontSize: 20,
+    fontFamily: "Inter_500Medium",
+    padding: 10,
+    textAlign: "center",
+  },
+
   title: {
     fontSize: 28,
     fontWeight: "bold",
@@ -114,12 +146,13 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 
+
   card: {
     backgroundColor: "#FFFFFF",
     borderWidth: 2,
     borderColor: "#B1B4B6",
     borderRadius: 8,
-    boxShadow: "0 4px 15px rgba(0, 94, 184, 1)",
+    boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
 
     padding: 20,
     marginBottom: 25,
