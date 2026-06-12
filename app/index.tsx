@@ -13,12 +13,13 @@ import { TouchableRipple } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
-
 export default function Index() {
   const [fontsLoaded] = useFonts({ Inter_700Bold, Inter_400Regular, Inter_800ExtraBold, Inter_600SemiBold, Inter_500Medium});
   const router = useRouter();
 
   if (!fontsLoaded) return null;
+
+  
 
   type PainScale = {
     id: string;
