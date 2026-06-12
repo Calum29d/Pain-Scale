@@ -2,7 +2,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from "expo-router";
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TouchableRipple } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -32,7 +32,7 @@ export default function FacesScale() {
 
     return (
         <SafeAreaView style = {styles.safeArea}>
-            <ScrollView style = {styles.scrollContent}>
+            <View style = {styles.content}>
                 <Pressable style = {styles.backArrow}
                     onPress = {() => router.back()}>
                         <FontAwesome name="arrow-left" size={30} color="#005EB8" />
@@ -54,7 +54,7 @@ export default function FacesScale() {
                 </TouchableRipple>
                 
                 </View>
-            </ScrollView>
+            </View>
         </SafeAreaView>
     );
 }
@@ -65,25 +65,18 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
 
-
-    header: {
-        marginBottom: 24,
-        backgroundColor: "#F8FAFC",
-        alignItems: "center",
-  },
-
     safeArea: {
         flex: 1,
         backgroundColor: "#F8FAFC",
   },
 
-    scrollContent: {
+    content: {
         backgroundColor: "#F8FAFC",
   },
 
   imageBox: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   savePainButton: {
@@ -91,6 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     margin: 5,
     boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
+
   },
 
   buttonText: {
@@ -98,5 +92,6 @@ const styles = StyleSheet.create({
     color: "white",
     padding: 5,
   },
+
 
 })
