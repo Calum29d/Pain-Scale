@@ -33,16 +33,31 @@ export default function Index() {
     {
       id: "faces",
       title: "Wong-Baker FACES",
-      description: "Visual pain assessment - For children aged 3 years and older",
+      description: "Visual pain assessment - For children aged 3 years and older.",
       route: "/faces"
     },
 
     {
       id: "painRuler",
       title: "Visual Analogue Scale (VAS)",
-      description: "Pain Ruler, used in children who are able to score their own pain",
+      description: "Pain Ruler, used for children who are able to rate their own pain.",
       route: "/painRuler",
     },
+
+    {
+      id: "FLACC",
+      title: "(FLACC) Face, Legs, Activity, Cry and Consolability",
+      description: "Behavioral observation scale used for neonates, children under 3 years, and older children with cognitive or communication impairments who cannot reliably rate their own pain",
+      route: "/FLACC"
+    },
+    {
+      id: "CRIES",
+      title: "(CRIES) Crying, Requires oxygen, Increased vital signs, Expression, Sleep",
+      description: "Behavioral and physiological pain assessment tool used to measure postoperative pain in neonates.",
+      route: "/CRIES"
+    },
+
+
 
   ]
 
