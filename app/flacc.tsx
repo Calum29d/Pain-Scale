@@ -71,9 +71,17 @@ export default function FlaccScale() {
     {/*used to move to the next set of question and keep track of the pain score*/ }
     const [currentIndex, setCurrentIndex] = useState(0)
     const currentSection = flaccQuestions[currentIndex]
-    const [score, setScore] = useState(0)
-    const [prevScore, setPrev] = useState(0)
 
+    {/*hashmap allows us to keep track of scores dynamically for when the users clicks back*/ }
+    const [scores, setScores] = useState<Record<string, number>>({})
+    const total = Object.values(scores).reduce((a, b) => a + b, 0)
+
+    const scoreDesc = () => {
+        if (total === 0) return <Text style={styles.painDesc}> They are relaxed and Comfortable</Text>;
+        if (total <= 3) return <Text style={styles.painDesc}>They are in mild discomfort</Text>;
+        if (total <= 6) return <Text style={styles.painDesc}>They are in moderate pain</Text>;
+        return <Text style={styles.painDesc}>They are in severe pain or discomfort or both</Text>;
+    };
 
 
     const router = useRouter();
@@ -88,17 +96,43 @@ export default function FlaccScale() {
                     </Pressable>
                     <View>
                         <Text style={styles.title}>FLACC</Text>
-                        <Text style={styles.subtitle}>Complete the questions to calculate a pain score</Text>
+                        <Text style={styles.subtitle}>Complete the questions to assess a pain score</Text>
                     </View>
                 </View>
 
                 {/*check if we are at the end of the questions*/}
                 {currentIndex === flaccQuestions.length ? (
                     <View>
-                        <Text> score: {score}</Text>
+                        <Text style={styles.score}>{total}</Text>
+                        {scoreDesc()}
+
+                        {/*take another FLACC assessment*/}
+                        <TouchableRipple
+                            rippleColor="rgba(0, 94, 184, 0.2)"
+                            style={styles.button}
+                            onPress={ () => { 
+                                setCurrentIndex(0) 
+                            }}>
+                            <View>
+                                <Text style={styles.buttonText}>Retake</Text>
+                            </View>
+                        </TouchableRipple>
+
+                        {/*save patient score button*/}
+                        <TouchableRipple
+                            rippleColor="rgba(0, 94, 184, 0.2)"
+                            style={styles.button}
+                            onPress={ () => { 
+                                
+                            }}>
+                            <View>
+                                <Text style={styles.buttonText}>Save Rating</Text>
+                            </View>
+                        </TouchableRipple>
                     </View>
+
                 ) : (
-                    
+
                     <View style={styles.cardSection}>
                         {/*question card section*/}
                         <View>
@@ -110,10 +144,9 @@ export default function FlaccScale() {
                                 rippleColor="rgba(0, 94, 184, 0.2)"
                                 style={styles.card}
                                 onPress={() => {
+                                    {/*copy previous scores and add/overwrite the new score*/ }
+                                    setScores(prev => ({ ...prev, [currentSection.section]: question.value }))
                                     setCurrentIndex(currentIndex + 1)
-                                    setScore(score + question.value)
-                                    setPrev(question.value)
-
                                 }}
                             >
                                 <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
@@ -129,14 +162,13 @@ export default function FlaccScale() {
                 {/*display a back button once the user has submitted atleast one question and hide once complete*/}
                 {currentIndex > 0 && currentIndex < flaccQuestions.length && (
                     <TouchableRipple
-                    rippleColor="rgba(255, 255, 255, 0.2)"
-                    style = {styles.backButton}
-                    onPress={ () => {
-                        setCurrentIndex(currentIndex - 1)
-                        setScore(score - prevScore)
-                    }}>
+                        rippleColor="rgba(255, 255, 255, 0.2)"
+                        style={styles.button}
+                        onPress={() => {
+                            setCurrentIndex(currentIndex - 1)
+                        }}>
                         <View>
-                            <Text style = {styles.buttonText}>Back</Text>
+                            <Text style={styles.buttonText}>Back</Text>
                         </View>
                     </TouchableRipple>
                 )}
@@ -217,21 +249,43 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 
-    backButton: {
-    backgroundColor: "#005EB8",
-    borderRadius: 8,
-    margin: 5,
-    boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
-    width: 70,
-    alignSelf: "center",
-  },
+    button: {
+        backgroundColor: "#005EB8",
+        borderRadius: 8,
+        marginVertical: 8,
+        marginHorizontal: 20,
+        boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
+        alignSelf: "center",
+        minWidth: 120,
+    },
 
-  buttonText: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 20,
-    color: "white",
-    padding: 5,
-    textAlign: "center",
-  },
+    buttonText: {
+        fontFamily: "Inter_500Medium",
+        fontSize: 18,
+        color: "white",
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        textAlign: "center",
+    },
+
+    score: {
+        fontSize: 80,
+        fontFamily: "Inter_500Medium",
+        color: "#005EB8",
+        marginTop: 4,
+        marginBottom: 10,
+        textAlign: "center",
+    },
+
+    painDesc: {
+        fontSize: 28,
+        fontFamily: "Inter_500Medium",
+        color: "#0e0c0c",
+        marginTop: 4,
+        marginBottom: 10,
+        textAlign: "center",
+    },
+
+
 
 });
