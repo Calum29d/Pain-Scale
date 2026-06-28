@@ -48,13 +48,13 @@ export default function Index() {
       id: "FLACC",
       title: "(FLACC) Face, Legs, Activity, Cry and Consolability",
       description: "Behavioral observation scale used for neonates, children under 3 years, and older children with cognitive or communication impairments who cannot reliably rate their own pain",
-      route: "/FLACC"
+      route: "/flacc"
     },
     {
       id: "CRIES",
       title: "(CRIES) Crying, Requires oxygen, Increased vital signs, Expression, Sleep",
       description: "Behavioral and physiological pain assessment tool used to measure postoperative pain in neonates.",
-      route: "/CRIES"
+      route: "/cries"
     },
 
 
