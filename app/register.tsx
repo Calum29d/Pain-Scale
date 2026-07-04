@@ -40,7 +40,7 @@ export default function Register() {
                         style={[styles.input, focusedField === "username" && styles.inputFocused]}
                         placeholder="Enter a username"
                         placeholderTextColor="#8A8D91"
-                        autoCapitalize="words"
+                        autoCapitalize="none"
                         value={userName}
                         onChangeText={setUsername}
                         onFocus={() => setFocusedField("username")}
