@@ -1,10 +1,10 @@
-package controller;
+package com.example.pain_scaleDB.controller;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pain_scaleDB.service.UserService;
-import security.JwtUtil;
+import com.example.pain_scaleDB.security.JwtUtil;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

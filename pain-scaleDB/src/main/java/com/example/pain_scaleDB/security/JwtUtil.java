@@ -1,4 +1,4 @@
-package security;
+package com.example.pain_scaleDB.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.MacAlgorithm;

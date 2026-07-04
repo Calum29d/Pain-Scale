@@ -4,11 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 
-/*This Class is basically the data shape, Hibernate reads this class and creates a user table in PostgreSQL with columns
+/*This Class is basically the data shape, Hibernate reads this class and creates a users table in PostgreSQL with columns
 Id,  username and password */
 @Entity
+@Table(name = "users")
 public class User {
 
     //auto increments the user ID, like when a user is created it will go 1, 2, 3, 4 and so on

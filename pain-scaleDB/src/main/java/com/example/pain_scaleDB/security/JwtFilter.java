@@ -1,4 +1,4 @@
-package security;
+package com.example.pain_scaleDB.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

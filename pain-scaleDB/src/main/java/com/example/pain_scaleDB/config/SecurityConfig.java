@@ -1,4 +1,4 @@
-package config;
+package com.example.pain_scaleDB.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import security.JwtFilter;
+import com.example.pain_scaleDB.security.JwtFilter;
 
 /*this class defines custom security rules otherwise spring would use default */
 @Configuration

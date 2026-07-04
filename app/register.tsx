@@ -16,183 +16,221 @@ export default function Register() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [focusedField, setFocusedField] = useState<string | null>(null);
 
-    const router = useRouter();
+    /*register variables and functions*/
+    const [Loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    if (!fontsLoaded) return null;
+    const handleRegister = async () => {
+            if (password !== confirmPassword) {
+                setErrorMessage("Passwords do not match");
+                return;
+            }
+            setErrorMessage("")
+            setLoading(true)
 
-    return (
-        <SafeAreaView style={styles.safeArea}>
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                <View style={styles.content}>
-                    <Pressable style={styles.backArrow}
-                        onPress={() => router.replace("/")}>
-                        <FontAwesome name="arrow-left" size={30} color="#005EB8" />
-                    </Pressable>
-                    <View>
-                        <Text style={styles.title}>Register</Text>
-                        <Text style={styles.subtitle}>Create a healthcare professional account</Text>
-                    </View>
-                </View>
+            try{
+                /*IOS fetch just for testing right now, converts data into json and sends request*/
+                const response = await fetch("http://192.168.1.188:8082/api/register", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({username: userName, password})
+                });
+                if (response.ok) {
+                    router.replace("/login");
+                } else {
+                    const msg = await response.text();
+                    setErrorMessage(msg);
+                }
+            } catch {
+                setErrorMessage("Network error, try again please")
+            } finally {
+                setLoading(false);
+            }
+        }
 
-                <View style={styles.formSection}>
-                    <Text style={styles.label}>Username</Text>
-                    <TextInput
-                        style={[styles.input, focusedField === "username" && styles.inputFocused]}
-                        placeholder="Enter a username"
-                        placeholderTextColor="#8A8D91"
-                        autoCapitalize="none"
-                        value={userName}
-                        onChangeText={setUsername}
-                        onFocus={() => setFocusedField("username")}
-                        onBlur={() => setFocusedField(null)}
-                    />
+        const router = useRouter();
 
+        if (!fontsLoaded) return null;
 
-                    <Text style={styles.label}>Password</Text>
-                    <TextInput
-                        style={[styles.input, focusedField === "password" && styles.inputFocused]}
-                        placeholder="Enter your password"
-                        placeholderTextColor="#8A8D91"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
-                        onFocus={() => setFocusedField("password")}
-                        onBlur={() => setFocusedField(null)}
-                    />
-
-                    <Text style={styles.label}>Confirm Password</Text>
-                    <TextInput
-                        style={[styles.input, focusedField === "confirmPassword" && styles.inputFocused]}
-                        placeholder="Re-enter your password"
-                        placeholderTextColor="#8A8D91"
-                        secureTextEntry
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                        onFocus={() => setFocusedField("confirmPassword")}
-                        onBlur={() => setFocusedField(null)}
-                    />
-
-                    <TouchableRipple
-                        rippleColor="rgba(255, 255, 255, 0.2)"
-                        style={styles.button}
-                        onPress={() => {
-
-                        }}>
-                        <View>
-                            <Text style={styles.buttonText}>Register</Text>
-                        </View>
-                    </TouchableRipple>
-
-                    <View style={styles.linkRow}>
-                        <Text style={styles.linkText}>Already have an account? </Text>
-                        <Pressable onPress={() => router.push("/login")}>
-                            <Text style={styles.linkAction}>Login</Text>
+        return (
+            <SafeAreaView style={styles.safeArea}>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <View style={styles.content}>
+                        <Pressable style={styles.backArrow}
+                            onPress={() => router.replace("/")}>
+                            <FontAwesome name="arrow-left" size={30} color="#005EB8" />
                         </Pressable>
+                        <View>
+                            <Text style={styles.title}>Register</Text>
+                            <Text style={styles.subtitle}>Create a healthcare professional account</Text>
+                        </View>
                     </View>
-                </View>
 
-            </ScrollView>
-        </SafeAreaView>
-    );
-}
+                    <View style={styles.formSection}>
+                        <Text style={styles.label}>Username</Text>
+                        <TextInput
+                            style={[styles.input, focusedField === "username" && styles.inputFocused]}
+                            placeholder="Enter a username"
+                            placeholderTextColor="#8A8D91"
+                            autoCapitalize="none"
+                            value={userName}
+                            onChangeText={setUsername}
+                            onFocus={() => setFocusedField("username")}
+                            onBlur={() => setFocusedField(null)}
+                        />
 
-const styles = StyleSheet.create({
 
-    backArrow: {
-        marginLeft: 20,
-    },
+                        <Text style={styles.label}>Password</Text>
+                        <TextInput
+                            style={[styles.input, focusedField === "password" && styles.inputFocused]}
+                            placeholder="Enter your password"
+                            placeholderTextColor="#8A8D91"
+                            secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                            onFocus={() => setFocusedField("password")}
+                            onBlur={() => setFocusedField(null)}
+                        />
 
-    safeArea: {
-        flex: 1,
-        backgroundColor: "#F8FAFC",
-    },
+                        <Text style={styles.label}>Confirm Password</Text>
+                        <TextInput
+                            style={[styles.input, focusedField === "confirmPassword" && styles.inputFocused]}
+                            placeholder="Re-enter your password"
+                            placeholderTextColor="#8A8D91"
+                            secureTextEntry
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            onFocus={() => setFocusedField("confirmPassword")}
+                            onBlur={() => setFocusedField(null)}
+                        />
+                        
+                        <Text style={styles.errorMsg}>{errorMessage}</Text>
 
-    content: {
-        backgroundColor: "#F8FAFC",
-    },
-    scrollContent: {
-        backgroundColor: "#F8FAFC",
-    },
+                        <TouchableRipple
+                            rippleColor="rgba(255, 255, 255, 0.2)"
+                            style={styles.button}
+                            onPress={handleRegister}>
+                            <View>
+                                <Text style={styles.buttonText}>Register</Text>
+                            </View>
+                        </TouchableRipple>
 
-    title: {
-        fontSize: 28,
-        fontWeight: "bold",
-        fontFamily: "Inter_700Bold",
-        color: "#0e0c0c",
-        textAlign: "center",
+                        <View style={styles.linkRow}>
+                            <Text style={styles.linkText}>Already have an account? </Text>
+                            <Pressable onPress={() => router.push("/login")}>
+                                <Text style={styles.linkAction}>Login</Text>
+                            </Pressable>
+                        </View>
+                    </View>
 
-    },
+                </ScrollView>
+            </SafeAreaView>
+        );
+    }
 
-    subtitle: {
-        fontSize: 16,
-        fontFamily: "Inter_500Medium",
-        color: "#525050",
-        marginTop: 4,
-        marginBottom: 10,
-        textAlign: "center",
-    },
+    const styles = StyleSheet.create({
 
-    formSection: {
-        margin: 20,
-    },
+        backArrow: {
+            marginLeft: 20,
+        },
 
-    label: {
-        fontFamily: "Inter_600SemiBold",
-        fontSize: 16,
-        color: "#0e0c0c",
-        marginBottom: 8,
-    },
+        safeArea: {
+            flex: 1,
+            backgroundColor: "#F8FAFC",
+        },
 
-    input: {
-        backgroundColor: "#FFFFFF",
-        borderWidth: 2,
-        borderColor: "#B1B4B6",
-        borderRadius: 8,
-        padding: 14,
-        marginBottom: 20,
-        fontFamily: "Inter_500Medium",
-        fontSize: 16,
-        color: "#0e0c0c",
-    },
+        content: {
+            backgroundColor: "#F8FAFC",
+        },
+        scrollContent: {
+            backgroundColor: "#F8FAFC",
+        },
 
-    inputFocused: {
-        borderColor: "#005EB8",
-    },
+        title: {
+            fontSize: 28,
+            fontWeight: "bold",
+            fontFamily: "Inter_700Bold",
+            color: "#0e0c0c",
+            textAlign: "center",
 
-    button: {
-        backgroundColor: "#005EB8",
-        borderRadius: 8,
-        marginVertical: 8,
-        boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
-        alignSelf: "center",
-        minWidth: 120,
-    },
+        },
 
-    buttonText: {
-        fontFamily: "Inter_500Medium",
-        fontSize: 18,
-        color: "white",
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        textAlign: "center",
-    },
+        subtitle: {
+            fontSize: 16,
+            fontFamily: "Inter_500Medium",
+            color: "#525050",
+            marginTop: 4,
+            marginBottom: 10,
+            textAlign: "center",
+        },
 
-    linkRow: {
-        flexDirection: "row",
-        justifyContent: "center",
-        marginTop: 16,
-    },
+        formSection: {
+            margin: 20,
+        },
 
-    linkText: {
-        fontFamily: "Inter_500Medium",
-        fontSize: 15,
-        color: "#525050",
-    },
+        label: {
+            fontFamily: "Inter_600SemiBold",
+            fontSize: 16,
+            color: "#0e0c0c",
+            marginBottom: 8,
+        },
 
-    linkAction: {
-        fontFamily: "Inter_600SemiBold",
-        fontSize: 15,
-        color: "#005EB8",
-    },
+        input: {
+            backgroundColor: "#FFFFFF",
+            borderWidth: 2,
+            borderColor: "#B1B4B6",
+            borderRadius: 8,
+            padding: 14,
+            marginBottom: 20,
+            fontFamily: "Inter_500Medium",
+            fontSize: 16,
+            color: "#0e0c0c",
+        },
 
-});
+        inputFocused: {
+            borderColor: "#005EB8",
+        },
+
+        button: {
+            backgroundColor: "#005EB8",
+            borderRadius: 8,
+            marginVertical: 8,
+            boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
+            alignSelf: "center",
+            minWidth: 120,
+        },
+
+        buttonText: {
+            fontFamily: "Inter_500Medium",
+            fontSize: 18,
+            color: "white",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            textAlign: "center",
+        },
+
+        linkRow: {
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 16,
+        },
+
+        linkText: {
+            fontFamily: "Inter_500Medium",
+            fontSize: 15,
+            color: "#525050",
+        },
+
+        errorMsg: {
+            fontFamily: "Inter_500Medium",
+            fontSize: 15,
+            color: "red",
+        },
+
+        linkAction: {
+            fontFamily: "Inter_600SemiBold",
+            fontSize: 15,
+            color: "#005EB8",
+        },
+
+    });
