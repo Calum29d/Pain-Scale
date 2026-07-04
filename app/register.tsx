@@ -11,8 +11,7 @@ export default function Register() {
 
     const [fontsLoaded] = useFonts({ Inter_600SemiBold, Inter_500Medium, Inter_700Bold });
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -26,7 +25,7 @@ export default function Register() {
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.content}>
                     <Pressable style={styles.backArrow}
-                        onPress={() => router.back()}>
+                        onPress={() => router.replace("/")}>
                         <FontAwesome name="arrow-left" size={30} color="#005EB8" />
                     </Pressable>
                     <View>
@@ -36,30 +35,18 @@ export default function Register() {
                 </View>
 
                 <View style={styles.formSection}>
-                    <Text style={styles.label}>Full Name</Text>
+                    <Text style={styles.label}>Username</Text>
                     <TextInput
-                        style={[styles.input, focusedField === "name" && styles.inputFocused]}
-                        placeholder="Enter your full name"
+                        style={[styles.input, focusedField === "username" && styles.inputFocused]}
+                        placeholder="Enter a username"
                         placeholderTextColor="#8A8D91"
                         autoCapitalize="words"
-                        value={name}
-                        onChangeText={setName}
-                        onFocus={() => setFocusedField("name")}
+                        value={userName}
+                        onChangeText={setUsername}
+                        onFocus={() => setFocusedField("username")}
                         onBlur={() => setFocusedField(null)}
                     />
 
-                    <Text style={styles.label}>Email</Text>
-                    <TextInput
-                        style={[styles.input, focusedField === "email" && styles.inputFocused]}
-                        placeholder="Enter your email"
-                        placeholderTextColor="#8A8D91"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        value={email}
-                        onChangeText={setEmail}
-                        onFocus={() => setFocusedField("email")}
-                        onBlur={() => setFocusedField(null)}
-                    />
 
                     <Text style={styles.label}>Password</Text>
                     <TextInput

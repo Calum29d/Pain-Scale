@@ -11,7 +11,7 @@ export default function Login() {
 
     const [fontsLoaded] = useFonts({ Inter_600SemiBold, Inter_500Medium, Inter_700Bold });
 
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [focusedField, setFocusedField] = useState<string | null>(null);
 
@@ -24,7 +24,7 @@ export default function Login() {
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.content}>
                     <Pressable style={styles.backArrow}
-                        onPress={() => router.back()}>
+                        onPress={() => router.replace("/")}>
                         <FontAwesome name="arrow-left" size={30} color="#005EB8" />
                     </Pressable>
                     <View>
@@ -34,16 +34,15 @@ export default function Login() {
                 </View>
 
                 <View style={styles.formSection}>
-                    <Text style={styles.label}>Email</Text>
+                    <Text style={styles.label}>Username</Text>
                     <TextInput
-                        style={[styles.input, focusedField === "email" && styles.inputFocused]}
-                        placeholder="Enter your email"
+                        style={[styles.input, focusedField === "username" && styles.inputFocused]}
+                        placeholder="Enter your username"
                         placeholderTextColor="#8A8D91"
-                        keyboardType="email-address"
                         autoCapitalize="none"
-                        value={email}
-                        onChangeText={setEmail}
-                        onFocus={() => setFocusedField("email")}
+                        value={username}
+                        onChangeText={setUsername}
+                        onFocus={() => setFocusedField("username")}
                         onBlur={() => setFocusedField(null)}
                     />
 
