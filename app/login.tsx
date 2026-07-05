@@ -22,6 +22,12 @@ export default function Login() {
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleLogin = async () => {
+        /*make sure that the user hasnt made an empty input so null requests cant be sent*/
+        if (!username.trim() || !password.trim()) {
+            setErrorMessage("Please fill in all fields");
+            return;
+        }
+        setErrorMessage("")
         setLoading(true)
 
         try{

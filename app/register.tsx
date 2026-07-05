@@ -23,6 +23,12 @@ export default function Register() {
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleRegister = async () => {
+
+        /*make sure that the user hasnt made an empty input so null requests cant be sent*/
+            if (!username.trim() || !password.trim() || !confirmPassword.trim()) {
+                setErrorMessage("Please fill in all fields");
+                return;
+            }
             if (password !== confirmPassword) {
                 setErrorMessage("Passwords do not match");
                 return;
@@ -76,7 +82,7 @@ export default function Register() {
                             placeholder="Enter a username"
                             placeholderTextColor="#8A8D91"
                             autoCapitalize="none"
-                            value={userName}
+                            value={username}
                             onChangeText={setUsername}
                             onFocus={() => setFocusedField("username")}
                             onBlur={() => setFocusedField(null)}
