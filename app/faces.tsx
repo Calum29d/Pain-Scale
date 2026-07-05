@@ -1,25 +1,76 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useRouter } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useFocusEffect, useRouter } from "expo-router";
+import * as ScreenOrientation from 'expo-screen-orientation';
+import * as SecureStore from 'expo-secure-store';
+import { useCallback, useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { TouchableRipple } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 
+
 export default function FacesScale() {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useFocusEffect(
+        useCallback(() => {
+          SecureStore.getItemAsync('authToken').then((token) => setIsLoggedIn(!!token));
+        }, [])
+    );
+
+    {/*rotate the screen landscap to accommodate for picture width*/}
+   useEffect( () => {
+    ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE
+    );
+
+    return () => {
+        try {
+            ScreenOrientation.lockAsync(
+                ScreenOrientation.OrientationLock.PORTRAIT_UP
+            );
+        } catch (e) {
+            console.warn("Orientation lock doesnt seem to work properly on expo go:", e)
+        }
+        
+    };
+   }, []);
+
 
     const  router = useRouter();
 
     return (
         <SafeAreaView style = {styles.safeArea}>
-            <ScrollView style = {styles.scrollContent}>
+            <View style = {styles.content}>
                 <Pressable style = {styles.backArrow}
                     onPress = {() => router.back()}>
                         <FontAwesome name="arrow-left" size={30} color="#005EB8" />
                     </Pressable>
-                { /* Header */}
-                <View style = {styles.header}>
 
-                    <Text style = {styles.title}>Wong-Baker {"\n"} FACES Scale</Text>
+
+                {/*image*/}
+                <View style = {styles.imageBox}>
+                    <Image source = {require('../assets/images/FACES-Unlicensed.jpg')}
+                    style = {{ width: 650, height: 250, }}/>
+                
+                {isLoggedIn && (<TouchableRipple
+                rippleColor="rgba(255, 255, 255, 0.2)"
+                onPress={async () => {
+                    try {
+                        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+                    } catch (e) {
+                        console.warn("Orientation lock doesnt seem to work properly on expo go:", e)
+                    }
+                    router.push("/patients");
+                }}
+                style={styles.savePainButton}>
+                    <View>
+                        <Text style={styles.buttonText}>Save Rating</Text>
+                    </View>
+                </TouchableRipple>)}
+                
                 </View>
-            </ScrollView>
+            </View>
         </SafeAreaView>
     );
 }
@@ -30,30 +81,33 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
 
-
-    title: {
-        fontSize: 28,
-        fontWeight: "bold",
-        fontFamily: "Inter_700Bold",
-        color: "#0e0c0c",
-        textAlign: "center",
-        marginTop: 20,
-
-    },
-
-    header: {
-        marginBottom: 24,
-        backgroundColor: "#F8FAFC",
-        alignItems: "center",
-  },
-
     safeArea: {
         flex: 1,
         backgroundColor: "#F8FAFC",
   },
 
-    scrollContent: {
+    content: {
         backgroundColor: "#F8FAFC",
   },
+
+  imageBox: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  savePainButton: {
+    backgroundColor: "#005EB8",
+    borderRadius: 8,
+    margin: 5,
+    boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
+
+  },
+
+  buttonText: {
+    fontFamily: "Inter_500Medium",
+    color: "white",
+    padding: 5,
+  },
+
 
 })
