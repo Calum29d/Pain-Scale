@@ -1,12 +1,21 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { useEffect } from 'react';
+import * as SecureStore from 'expo-secure-store';
+import { useCallback, useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TouchableRipple } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function FacesScale() {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useFocusEffect(
+        useCallback(() => {
+          SecureStore.getItemAsync('authToken').then((token) => setIsLoggedIn(!!token));
+        }, [])
+    );
 
     {/*rotate the screen landscap to accommodate for picture width*/ }
     useEffect(() => {
@@ -42,14 +51,21 @@ export default function FacesScale() {
                         <Image source={require('../assets/images/VAS.jpg')}
                             style={{ width: 700, height: 90, }} />
 
-                        <TouchableRipple
+                        {isLoggedIn && (<TouchableRipple
                             rippleColor="rgba(255, 255, 255, 0.2)"
-                            onPress={() => router.push("/patients")}
+                            onPress={async () => {
+                                try {
+                                    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+                                } catch (e) {
+                                    console.warn("Orientation lock doesnt seem to work properly on expo go:", e)
+                                }
+                                router.push("/patients");
+                            }}
                             style={styles.savePainButton}>
                             <View>
                                 <Text style={styles.buttonText}>Save Rating</Text>
                             </View>
-                        </TouchableRipple>
+                        </TouchableRipple>)}
                     </View>
                 </View>
 

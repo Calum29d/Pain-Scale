@@ -1,13 +1,22 @@
 import { Inter_500Medium, Inter_600SemiBold, Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useRouter } from "expo-router";
-import { useState } from 'react';
+import { useFocusEffect, useRouter } from "expo-router";
+import * as SecureStore from 'expo-secure-store';
+import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableRipple } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function CRIESScale() {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useFocusEffect(
+        useCallback(() => {
+          SecureStore.getItemAsync('authToken').then((token) => setIsLoggedIn(!!token));
+        }, [])
+    );
 
     const [fontsLoaded] = useFonts({ Inter_600SemiBold, Inter_500Medium, Inter_700Bold });
 
@@ -125,16 +134,14 @@ export default function CRIESScale() {
                         </TouchableRipple>
 
                         {/*save patient score button*/}
-                        <TouchableRipple
+                        {isLoggedIn && (<TouchableRipple
                             rippleColor="rgba(0, 94, 184, 0.2)"
                             style={styles.button}
-                            onPress={ () => { 
-                                
-                            }}>
+                            onPress={() => router.push("/patients")}>
                             <View>
                                 <Text style={styles.buttonText}>Save Rating</Text>
                             </View>
-                        </TouchableRipple>
+                        </TouchableRipple>)}
                     </View>
 
                 ) : (
