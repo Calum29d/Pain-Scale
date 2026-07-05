@@ -1,50 +1,96 @@
-# Welcome to your Expo app 👋
+# Pain-Scale
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Pain-Scale is a cross-platform app (iOS, Android, and web) that presents validated clinical pain-assessment scales to help healthcare professionals score a patient's pain. It pairs an [Expo](https://expo.dev) / React Native frontend with a Spring Boot + PostgreSQL backend for account management and persisting patients and their assessment history.
 
-## Get started
+## Project Overview
 
-1. Install dependencies
+The app implements four validated pain-assessment tools:
 
-   ```bash
-   npm install
-   ```
+- **Wong-Baker FACES** — visual pain assessment for children aged 3 years and older
+- **Visual Analogue Scale (VAS) / Pain Ruler** — for patients who can rate their own pain
+- **FLACC** (Face, Legs, Activity, Cry, Consolability) — behavioral observation scale for neonates, young children, and patients who cannot reliably self-report pain
+- **CRIES** (Crying, Requires oxygen, Increased vital signs, Expression, Sleep) — postoperative pain assessment for neonates
 
-2. Start the app
+Each scale walks the clinician through a short, structured questionnaire (or an interactive visual/ruler) and produces a total score mapped to a pain-severity description. Healthcare professionals can optionally create an account to manage a patient list and save each assessment's score against a patient's history over time.
 
-   ```bash
-   npx expo start
-   ```
+The repository contains two parts:
 
-In the output, you'll find options to open the app in a
+- **`app/`** — the Expo Router frontend (this is the app you run on a device/simulator/browser)
+- **`pain-scaleDB/`** — a Spring Boot REST API backend (JWT auth, patients, and pain assessments), backed by PostgreSQL
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Key Features
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Four validated pain scales: Wong-Baker FACES, VAS Pain Ruler, FLACC, and CRIES
+- Automatic scoring with a textual pain-severity result derived from the selected answers
+- Orientation-locked, landscape-friendly screens for the FACES image and VAS ruler
+- Optional account creation/login (JWT-based) to unlock patient management
+- Patient list and per-patient detail view showing pain-assessment history
+- Save a completed assessment's score directly to a patient's record
+- Runs natively on iOS and Android, and also in the browser, from a single codebase
 
-## Get a fresh project
+## Installation Instructions
 
-When you're ready, run:
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) and npm
+- [Expo CLI](https://docs.expo.dev/more/expo-cli/) (invoked via `npx`, no global install required)
+- A device/simulator: Xcode (iOS), Android Studio (Android), or just a modern browser (web)
+- Java 17 and Maven, plus a running [PostgreSQL](https://www.postgresql.org/) instance, if you want to run the backend API
+
+### Frontend (Expo app)
 
 ```bash
-npm run reset-project
+# from the repo root
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+From the Metro CLI output you can open the app in a development build, an Android emulator, an iOS simulator, [Expo Go](https://expo.dev/go), or a web browser. You can also target a platform directly:
 
-## Learn more
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Backend (Spring Boot API)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The backend lives in `pain-scaleDB/` and expects a PostgreSQL database named `registration` on `localhost:5432` (see `pain-scaleDB/src/main/resources/application.yml`). Create a `.env` file in `pain-scaleDB/` with your database credentials:
 
-## Join the community
+```
+DB_USERNAME=your_postgres_username
+DB_PASSWORD=your_postgres_password
+```
 
-Join our community of developers creating universal apps.
+Then start the API:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+cd pain-scaleDB
+./mvnw spring-boot:run
+```
+
+The API listens on port `8082` by default.
+
+## Usage Examples
+
+**Score a patient using a pain scale (no account required):**
+
+1. Launch the app and, on the home screen, tap one of the pain-scale cards (e.g. "Wong-Baker FACES").
+2. Work through each step of the questionnaire (or select a face/ruler position).
+3. On the final step, review the computed score and pain-severity description.
+
+**Save assessments against a patient's history:**
+
+1. From the home screen, tap "Login or create an account" and register or sign in.
+2. Tap "Patients" to view or add a patient.
+3. Open a patient's detail page to see their past assessments, or start a new assessment and save the resulting score to that patient's record.
+
+**Linting the frontend:**
+
+```bash
+npm run lint
+```
+
+## License Information
+
+No license file is currently included in this repository. All rights are reserved by the project author unless a license is added.
