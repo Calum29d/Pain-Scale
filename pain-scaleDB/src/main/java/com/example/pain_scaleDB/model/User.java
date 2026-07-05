@@ -1,10 +1,17 @@
 package com.example.pain_scaleDB.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 
@@ -18,6 +25,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /*fetch patients only when accessing the list */
+    @ManyToMany(fetch = FetchType.LAZY)
+    /*creates a many to many relation ship between user and patients (many users can have many patients, vice versa) */
+    /* makes a new table with the user_id linked to patient_id*/
+    @JoinTable(
+        name = "user_patients",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "patient_id")
+    )
+    /*tells hibernate that this is the other table use to join */
+    private List<Patient> patients = new ArrayList<>();
 
     /*cant have duplicate usernames */
     @Column(unique = true, nullable = false)
@@ -35,6 +54,12 @@ public class User {
     }
     public String getUsername() {
         return username;
+    }
+    public List<Patient> getPatients() {
+        return patients;
+    }
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
     }
     public void setUsername(String username) {
         this.username = username;
