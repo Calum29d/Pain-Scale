@@ -30,8 +30,15 @@ export default function AddAssessment() {
             setErrorMessage("Please fill in all fields");
             return;
         }
+
+        /*i could add some more input validation for the types of scales but i cant be bothered rn*/
         if (isNaN(Number(score))) {
             setErrorMessage("Score must be a number");
+            return;
+        }
+
+        if(Number(score) < 0 || Number(score) > 10){
+            setErrorMessage("Score must be between 0 and 10");
             return;
         }
         setErrorMessage("")

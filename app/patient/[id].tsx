@@ -95,7 +95,6 @@ export default function PatientDetail() {
                   <Text style={styles.cardDesc}>{new Date(painAssessment.assessedAt).toLocaleString()}</Text>
                 </View>
 
-                <FontAwesome name="arrow-right" size={24} color="#005EB8" />
               </View>
             </View>
           ))}
