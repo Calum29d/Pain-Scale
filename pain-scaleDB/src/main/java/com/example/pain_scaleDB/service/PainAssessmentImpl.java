@@ -26,13 +26,16 @@ public class PainAssessmentImpl implements PainAssessmentService{
         return painAssessmentRepository.findPainAssessmentsByPatientId(Id);
     }
 
-    @Override 
+    @Override
     public void addAssessment(Long Id, PainAssessment painAssessment){
         Optional<Patient> patient = patientRepository.findById(Id);
 
         if (patient.isEmpty()){
             throw new RuntimeException("Patient not found");
         }
+
+        painAssessment.setPatient(patient.get());
+        painAssessmentRepository.save(painAssessment);
     }
 
 
