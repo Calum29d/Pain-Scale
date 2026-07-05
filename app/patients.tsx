@@ -91,13 +91,12 @@ export default function Patients() {
               key={patient.id}
               rippleColor="rgba(0, 94, 184, 0.2)"
               style={styles.card}
-              onPress={() => {}}
+              /*go to the patients page by passing their name and id*/
+              onPress={() => router.push({ pathname: "/patient/[id]", params: { id: String(patient.id), name: patient.name } })}
               >
-                <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.cardTitle}>{patient.name}</Text>
-                    <Text style={styles.cardDesc}>{patient.medCode}</Text>
-                  </View>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1, justifyContent: "space-between" }}>
+                  <Text style={styles.cardTitle}>{patient.name} - {patient.medCode}</Text>
+                  
                   <FontAwesome name="arrow-right" size={24} color="#005EB8" />
                 </View>
             </TouchableRipple>
@@ -178,8 +177,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
 
-    padding: 20,
-    marginBottom: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginBottom: 15,
 
     flexDirection: "row",
     justifyContent: "space-between",
@@ -189,11 +189,12 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 20,
-    marginBottom: 10,
   },
 
   cardDesc: {
     fontFamily: "Inter_500Medium",
     fontSize: 15,
+    marginRight: 12,
+    color: "#525050",
   },
 });
