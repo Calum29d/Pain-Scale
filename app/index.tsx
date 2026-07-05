@@ -21,6 +21,7 @@ export default function Index() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  /*refreshes the patients list on rerender as patients can be updated */
   useFocusEffect(
 
     /*check if a token is set*/
