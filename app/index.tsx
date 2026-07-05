@@ -100,11 +100,24 @@ export default function Index() {
               <MaterialIcons name={isLoggedIn ? "logout" : "account-box"} size={30} color="#005EB8" style={{marginRight: 5}}/>
             </View>
           </TouchableRipple>
+
+          {/*Takes you to the logged in users patients list it will only show when the users is logged in*/}
+          {isLoggedIn && (
+            <TouchableRipple
+              style={styles.patientsCard}
+              onPress={() => router.push("/patients")}
+              rippleColor="rgba(0, 94, 184, 0.2)">
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
+                  <Text style={styles.patientsText}>Patients</Text>
+                  <MaterialIcons name="people" size={24} color="#005EB8" style={{marginRight: 5}}/>
+                </View>
+            </TouchableRipple>
+          )}
           {/*Header text*/}
           <Entypo name="squared-plus" size={70} color="#005EB8"/>
           <Text style={styles.title}>Pain Assessments</Text>
           <Text style={styles.subtitle}>Track patients pain with validated scales used to assist healthcare professionals</Text>
-          
+
         </View>
 
         <View style = {styles.cardSection}>
@@ -161,6 +174,24 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Inter_500Medium",
     padding: 10,
+    textAlign: "center",
+  },
+
+  patientsCard: {
+    backgroundColor: "rgba(0, 94, 184, 0.2)",
+    borderColor: "#005EB8",
+    borderWidth: 2,
+    borderRadius: 8,
+    marginBottom: 15,
+    alignSelf: "center",
+    boxShadow: "0 4px 10px rgba(0, 94, 184, 1)",
+  },
+
+  patientsText: {
+    fontSize: 15,
+    fontFamily: "Inter_500Medium",
+    padding: 8,
+    paddingHorizontal: 12,
     textAlign: "center",
   },
 
