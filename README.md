@@ -90,7 +90,3 @@ The API listens on port `8082` by default.
 ```bash
 npm run lint
 ```
-
-## License Information
-
-No license file is currently included in this repository. All rights are reserved by the project author unless a license is added.
