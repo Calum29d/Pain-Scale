@@ -22,6 +22,8 @@ export default function Index() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useFocusEffect(
+
+    /*check if a token is set*/
     useCallback(() => {
       SecureStore.getItemAsync('authToken').then((token) => setIsLoggedIn(!!token));
     }, [])
