@@ -1,6 +1,6 @@
 # Pain-Scale
 
-Pain-Scale is a cross-platform app (iOS, Android, and web) that presents validated clinical pain-assessment scales to help healthcare professionals score a patient's pain. It pairs an [Expo](https://expo.dev) / React Native frontend with a Spring Boot + PostgreSQL backend for account management and persisting patients and their assessment history.
+Pain-Scale is a an app made for IOS and Android that presents validated clinical pain-assessment scales to help healthcare professionals score a patient's pain. It pairs an [Expo](https://expo.dev) / React Native frontend with a Spring Boot + PostgreSQL backend for account management and persisting patients and their assessment history.
 
 ## Project Overview
 
