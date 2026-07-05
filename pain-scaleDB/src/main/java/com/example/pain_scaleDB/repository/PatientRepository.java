@@ -7,5 +7,5 @@ import com.example.pain_scaleDB.model.Patient;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>{
-    Patient findByName(String name);
+    Patient findByMedCode(String medCode);
 }
