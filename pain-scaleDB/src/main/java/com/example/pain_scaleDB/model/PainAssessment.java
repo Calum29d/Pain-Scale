@@ -2,6 +2,8 @@ package com.example.pain_scaleDB.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,8 +14,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /*This class holds the datashape for a pain assessment that the patient has had */
 @Entity
@@ -32,7 +32,8 @@ public class PainAssessment {
     private int score;
 
     /*many pain assessments can point to one patient */
-    /*ignored so Jackson doesn't try to serialize the lazy Hibernate proxy - the frontend already knows which patient this is */
+    /*ignored so Jackson doesn't try to serialize the lazy Hibernate proxy - the frontend already knows which patient this is
+    had to use claude to find this bug, Actually had no idea what was going on */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
