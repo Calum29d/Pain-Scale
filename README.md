@@ -26,7 +26,7 @@ The repository contains two parts:
 - Optional account creation/login (JWT-based) to unlock patient management
 - Patient list and per-patient detail view showing pain-assessment history
 - Save a completed assessment's score directly to a patient's record
-- Runs natively on iOS and Android, and also in the browser, from a single codebase
+- Runs natively on iOS and Android
 
 ## Installation Instructions
 
