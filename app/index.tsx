@@ -2,7 +2,10 @@ import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, In
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useFocusEffect } from "@react-navigation/native";
 import { Href, useRouter } from "expo-router";
+import * as SecureStore from 'expo-secure-store';
+import { useCallback, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -16,10 +19,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Index() {
   const [fontsLoaded] = useFonts({ Inter_700Bold, Inter_400Regular, Inter_800ExtraBold, Inter_600SemiBold, Inter_500Medium});
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      SecureStore.getItemAsync('authToken').then((token) => setIsLoggedIn(!!token));
+    }, [])
+  );
+
+  /*logout function/go to login*/
+  const handleAccountPress = async () => {
+    if (isLoggedIn) {
+      await SecureStore.deleteItemAsync('authToken');
+      setIsLoggedIn(false);
+    } else {
+      router.push("/login");
+    }
+  };
 
   if (!fontsLoaded) return null;
 
-  
+
 
   type PainScale = {
     id: string;
@@ -71,11 +91,11 @@ export default function Index() {
           {/*login button*/}
           <TouchableRipple
           style = {styles.loginCard}
-          onPress={() => router.push("/login")}
+          onPress={handleAccountPress}
           rippleColor="rgba(255, 255, 255, 0.2)">
             <View style = {{ flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
-              <Text style = {styles.loginText}>Login or create an account</Text>
-              <MaterialIcons name="account-box" size={30} color="#005EB8" style={{marginRight: 5}}/>
+              <Text style = {styles.loginText}>{isLoggedIn ? "Log out" : "Login or create an account"}</Text>
+              <MaterialIcons name={isLoggedIn ? "logout" : "account-box"} size={30} color="#005EB8" style={{marginRight: 5}}/>
             </View>
           </TouchableRipple>
           {/*Header text*/}

@@ -1,6 +1,7 @@
 import { Inter_500Medium, Inter_600SemiBold, Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from "expo-router";
+import * as SecureStore from 'expo-secure-store';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { TouchableRipple } from 'react-native-paper';
@@ -14,6 +15,36 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [focusedField, setFocusedField] = useState<string | null>(null);
+
+    /*login functionality*/
+     /*loading is not used but would be used to disable the user from making more requests but since this is a small project we dont really need to use it*/
+    const [Loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleLogin = async () => {
+        setLoading(true)
+
+        try{
+            const response = await fetch("http://192.168.1.188:8082/api/login",{
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({username, password})
+            });
+
+            if (response.ok) {
+                const token = await response.text();
+                await SecureStore.setItemAsync('authToken', token)
+                router.replace("/")
+            } else{
+                const msg = await response.text();
+                setErrorMessage(msg)
+            }
+        }catch{
+            setErrorMessage("Network error, try again")
+        } finally{
+            setLoading(false)
+        }
+    }
 
     const router = useRouter();
 
@@ -57,13 +88,12 @@ export default function Login() {
                         onFocus={() => setFocusedField("password")}
                         onBlur={() => setFocusedField(null)}
                     />
+                    <Text style={styles.errorMsg}>{errorMessage}</Text>
 
                     <TouchableRipple
                         rippleColor="rgba(255, 255, 255, 0.2)"
                         style={styles.button}
-                        onPress={() => {
-
-                        }}>
+                        onPress={handleLogin}>
                         <View>
                             <Text style={styles.buttonText}>Login</Text>
                         </View>
@@ -180,5 +210,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: "#005EB8",
     },
+
+    errorMsg: {
+            fontFamily: "Inter_500Medium",
+            fontSize: 15,
+            color: "red",
+        },
 
 });

@@ -11,12 +11,14 @@ export default function Register() {
 
     const [fontsLoaded] = useFonts({ Inter_600SemiBold, Inter_500Medium, Inter_700Bold });
 
-    const [userName, setUsername] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [focusedField, setFocusedField] = useState<string | null>(null);
 
     /*register variables and functions*/
+
+    /*loading is not used but would be used to disable the user from making more requests but since this is a small project we dont really need to use it*/
     const [Loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -29,11 +31,12 @@ export default function Register() {
             setLoading(true)
 
             try{
-                /*IOS fetch just for testing right now, converts data into json and sends request*/
+                /*IOS fetch just for testing right now, converts data into json and sends request
+                Have to update depending on your home network and if youre using android or IOS*/
                 const response = await fetch("http://192.168.1.188:8082/api/register", {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({username: userName, password})
+                    body: JSON.stringify({username, password})
                 });
                 if (response.ok) {
                     router.replace("/login");
