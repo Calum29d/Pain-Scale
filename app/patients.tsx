@@ -74,10 +74,10 @@ export default function Patients() {
             <Text style = {styles.errorMsg}>{errorMessage}</Text>
           </View>
 
-          {/*Add patient button, no logic yet*/}
+          {/*Add patient button*/}
           <TouchableRipple
             style={styles.addButton}
-            onPress={() => {}}
+            onPress={() => router.push("/addPatient")}
             rippleColor="rgba(255, 255, 255, 0.2)">
               <Text style={styles.addButtonText}>Add Patient</Text>
           </TouchableRipple>
